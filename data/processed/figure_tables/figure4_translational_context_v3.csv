@@ -1,7 +1,0 @@
-compound,use_case,relevant_context,minimum_required_gain,is_lower_bound,gap_label
-Ciprofloxacin,Clinical drug monitoring,EC50 22.4 µM vs plasma Cmax ~9 µM,2.4870681111111113,False,2.5x
-L-carnitine,Metabolic health,no plateau by 200 µM; plasma to 75 µM,2.6666666666666665,True,>2.7x
-Ergothioneine,Nutrition / oxidative stress,no plateau by 200 µM; RBC to 160 µM,1.25,True,>1.25x
-Thiamine,Vitamin status,no plateau by 200 µM; blood to 0.195 µM,1025.6410256410256,True,">1,000x"
-DEHP,Environmental exposure,EC50 34.5 µM; background serum <0.005 µM,6904.295,True,">6,900x"
-one-mutation benchmark,"V7 to iEscSnFR, T360S",ciprofloxacin,2.39712534343763,False,2.40x EC50; 3.02x delta-slope

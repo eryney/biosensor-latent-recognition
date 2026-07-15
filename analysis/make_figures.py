@@ -1,4 +1,4 @@
-"""Generate v3 manuscript figures from the rebuilt processed screen data."""
+"""Generate all main-text figures from the processed data tables."""
 
 from __future__ import annotations
 
@@ -22,15 +22,12 @@ from scipy.cluster.hierarchy import linkage, leaves_list
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-ROOT = Path(__file__).resolve().parents[1]  # repository root
+ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "processed"
+METADATA = ROOT / "data" / "metadata"
+STRUCTURES = ROOT / "data" / "structures"
 FIG = ROOT / "figures"
 ANALYSIS = ROOT / "analysis"
-TABLES = DATA / "figure_tables"  # derived per-figure summary tables
-# OUT points at optional structure-prediction assets that are not shipped in
-# this repository; the two figure1_* helpers that use it are not called by
-# main() and are retained only for reference.
-OUT = ROOT / "structures"
 
 COLOR = {
     "blue": "#2B6CB0",
@@ -215,7 +212,7 @@ def figure1_scaffold_prediction() -> None:
 
     ax_pred.axis("off")
     ax_pred.text(0.08, 0.98, "Structure prediction run status", fontsize=8, va="top")
-    manifest = OUT / "structures" / "predictions" / "ee88e2c3-manifest.json"
+    manifest = STRUCTURES / "predictions" / "ee88e2c3-manifest.json"
     ptms = []
     aggregates = []
     if manifest.exists():
@@ -238,7 +235,7 @@ def figure1_scaffold_prediction() -> None:
     ax_pred.text(0.02, 0.02, "The Chai confidence is modest, so the model is treated as orientation rather than mechanism.", fontsize=6.1)
     panel(ax_pred, "c")
 
-    save(fig, "fig1_scaffold_structure_prediction")
+    save(fig, "figure1_scaffold_structure_prediction")
 
 
 def parse_pdb_ca(path: Path, chain: str = "A") -> dict[int, np.ndarray]:
@@ -391,7 +388,7 @@ def set_2d_bounds(axes: list[plt.Axes], coord_sets: list[dict[int, np.ndarray]])
 def figure1_structure_model_comparison() -> None:
     """Crystal, Chai-1, ColabFold/AF2 status, and RoseTTAFold2 comparison."""
 
-    structure_dir = OUT / "structures"
+    structure_dir = STRUCTURES
     pred_dir = structure_dir / "predictions"
     crystal = parse_pdb_ca(structure_dir / "7S7U.pdb")
     chai = parse_cif_ca(pred_dir / "chai1" / "ee88e2c3-pred.model_idx_4.cif")
@@ -485,7 +482,7 @@ def figure1_structure_model_comparison() -> None:
         ax_status.plot([0.02, 0.98], [y - 0.11, y - 0.11], color="#E2E8F0", lw=0.65)
         y -= 0.15
 
-    save(fig, "fig1_structure_model_comparison")
+    save(fig, "figure1_structure_model_comparison")
 
 
 def load_matrix() -> pd.DataFrame:
@@ -502,8 +499,8 @@ def mol_from_smiles(smiles: str):
 
 
 def classify_ligands() -> pd.DataFrame:
-    smiles = pd.read_csv(DATA / "ligand_smiles.csv")
-    categories = pd.read_csv(DATA / "ligand_categories.csv")
+    smiles = pd.read_csv(METADATA / "ligand_smiles.csv")
+    categories = pd.read_csv(METADATA / "ligand_categories.csv")
     df = smiles.merge(categories, on="ligand", how="left")
 
     alkaloid_like = {
@@ -552,7 +549,7 @@ def classify_ligands() -> pd.DataFrame:
             }
         )
     out = pd.DataFrame(rows)
-    out.to_csv(TABLES / "ligand_scope_classification_v3.csv", index=False)
+    out.to_csv(ANALYSIS / "ligand_scope_classification.csv", index=False)
     return out
 
 
@@ -600,6 +597,11 @@ def figure2_screen_scope() -> None:
     cbar.set_label("ΔF/F0\n(values <= 0 shown as 0;\nscale capped at 4)")
 
     starts = lig.groupby("scope", sort=False).head(1).index
+    scope_two_line = {
+        "alkaloid-like": "alkaloid-\nlike",
+        "non-alkaloid charged": "non-alkaloid\ncharged",
+        "non-alkaloid uncharged": "non-alkaloid\nuncharged",
+    }
     boundary_positions = []
     start = 0
     for scope in scope_order:
@@ -607,7 +609,8 @@ def figure2_screen_scope() -> None:
         if n == 0:
             continue
         mid = start + n / 2 - 0.5
-        ax.text(-3.9, mid, scope, ha="right", va="center", fontsize=8.1, fontweight="bold")
+        ax.text(-8.4, mid, scope_two_line.get(scope, scope), ha="right", va="center",
+                fontsize=7.8, fontweight="bold", linespacing=1.0)
         boundary_positions.append(start - 0.5)
         start += n
     for y in boundary_positions[1:] + [len(lig) - 0.5]:
@@ -624,40 +627,30 @@ def figure2_screen_scope() -> None:
     ax_b.legend(frameon=False, loc="lower right", fontsize=6.9)
     ax_b.text(-0.32, 1.10, "b", transform=ax_b.transAxes, fontweight="bold", fontsize=11.0)
 
-    representatives = ["Nicotine", "thiamine (hydrochloride)", "DEHP"]
+    ax_structures.axis("off")
+    representatives = [
+        ("Nicotine", "Nicotine (alkaloid-like)"),
+        ("thiamine (hydrochloride)", "Thiamine (non-alkaloid charged)"),
+        ("DEHP", "DEHP (non-alkaloid uncharged)"),
+    ]
     smiles_by_ligand = lig.set_index("ligand")["SMILES"]
-    representative_mols = [mol_from_smiles(smiles_by_ligand.loc[ligand]) for ligand in representatives]
+    representative_mols = [mol_from_smiles(smiles_by_ligand.loc[k]) for k, _ in representatives]
     structure_grid = Draw.MolsToGridImage(
         representative_mols,
         molsPerRow=1,
-        subImgSize=(520, 420),
+        subImgSize=(520, 300),
+        legends=[label for _, label in representatives],
         useSVG=False,
     )
     ax_structures.imshow(structure_grid)
-    ax_structures.axis("off")
-    ax_structures.set_title("Representative structures", fontsize=10.4, pad=4)
-    for y_pos, label in [
-        (0.69, "Nicotine\nalkaloid-like"),
-        (0.36, "Thiamine\nnon-alkaloid charged"),
-        (0.03, "DEHP\nnon-alkaloid uncharged"),
-    ]:
-        ax_structures.text(
-            0.5,
-            y_pos,
-            label,
-            transform=ax_structures.transAxes,
-            ha="center",
-            va="bottom",
-            fontsize=8.1,
-            color=COLOR["gray"],
-        )
-    ax_structures.text(-0.12, 1.14, "c", transform=ax_structures.transAxes, fontweight="bold", fontsize=11.0)
+    ax_structures.set_title("Representative\nstructures", fontsize=9.4, pad=4, linespacing=1.05)
+    ax_structures.text(-0.05, 1.15, "c", transform=ax_structures.transAxes, fontweight="bold", fontsize=11.0)
 
     ax_b.spines["top"].set_visible(False)
     ax_b.spines["right"].set_visible(False)
 
-    lig.to_csv(TABLES / "figure2_ligand_scope_summary_v3.csv", index=False)
-    save(fig, "fig1_screen_scope_heatmap")
+    lig.to_csv(ANALYSIS / "figure2_ligand_scope_summary.csv", index=False)
+    save(fig, "figure2_screen_scope_heatmap")
 
 
 def hamming_with_terminal_tolerance(a: str, b: str) -> int:
@@ -672,10 +665,9 @@ def hamming_with_terminal_tolerance(a: str, b: str) -> int:
 
 
 def sensor_sequences() -> dict[str, str]:
-    # Sensor amino-acid sequences are provided as a processed CSV so the figure
-    # script runs from the repository without the raw workbook.
-    seq = pd.read_csv(DATA / "sensor_sequences.csv")
-    return {str(n): str(s).upper() for n, s in zip(seq["sensor"], seq["sequence"])}
+    # Sequences ship as a curated CSV under data/metadata.
+    seqs = pd.read_csv(METADATA / "sensor_sequences.csv")
+    return {str(row["sensor"]): str(row["sequence"]).upper() for _, row in seqs.iterrows()}
 
 
 def figure3_activity_cliffs() -> None:
@@ -690,14 +682,14 @@ def figure3_activity_cliffs() -> None:
             corr = float(np.corrcoef(matrix[a], matrix[b])[0, 1])
             pairs.append({"sensor_a": a, "sensor_b": b, "mutations": mut, "response_corr": corr})
     pairs_df = pd.DataFrame(pairs)
-    pairs_df.to_csv(TABLES / "figure3_sequence_activity_cliff_pairs_v3.csv", index=False)
+    pairs_df.to_csv(ANALYSIS / "figure3_sequence_activity_cliff_pairs.csv", index=False)
 
     tap_v7 = matrix[["Tap1.0", "V7"]].copy()
     tap_v7["difference"] = tap_v7["V7"] - tap_v7["Tap1.0"]
     top = tap_v7.reindex(tap_v7["difference"].abs().sort_values(ascending=False).head(14).index)
 
     fig = plt.figure(figsize=(7.4, 6.0), constrained_layout=True)
-    gs = GridSpec(2, 2, figure=fig, height_ratios=[1.05, 1.35], width_ratios=[1.0, 1.45])
+    gs = GridSpec(2, 2, figure=fig, height_ratios=[1.05, 1.35], width_ratios=[1.0, 1.45], wspace=0.42)
     ax_tree = fig.add_subplot(gs[0, :])
     ax_rewire = fig.add_subplot(gs[1, 0])
     fp_gs = gs[1, 1].subgridspec(2, 1, height_ratios=[0.42, 1.0], hspace=0.05)
@@ -797,7 +789,7 @@ def figure3_activity_cliffs() -> None:
     ax_rewire.set_xlim(0, 13.5)
     ax_rewire.set_xticks([0, 3, 6, 9, 12])
     ax_rewire.set_xlabel("Ligands with changed hit status (of 63)")
-    ax_rewire.set_title("1-3 mutations can rewire many ligand responses")
+    ax_rewire.set_title("1-3 mutations rewire many responses", fontsize=9.4)
     ax_rewire.grid(axis="x", color="#E2E8F0", lw=0.6)
     ax_rewire.set_axisbelow(True)
     ax_rewire.text(-0.11, 1.14, "b", transform=ax_rewire.transAxes, fontweight="bold", fontsize=11.0)
@@ -814,8 +806,8 @@ def figure3_activity_cliffs() -> None:
     ax_fp.set_ylabel("ΔF/F0")
     ax_fp.set_ylim(-1.05, 3.15)
     ax_fp_high.set_ylim(9.6, 11.35)
-    ax_fp_high.set_title("One mutation switches ligand responses from near zero to >1")
-    ax_fp_high.legend(frameon=False, ncol=2, loc="upper right")
+    ax_fp_high.set_title("V7 vs Tap1.0: one mutation (W436A)\nswitches responses from near zero to >1", fontsize=9.0, pad=6)
+    ax_fp_high.legend(frameon=False, ncol=2, loc="upper right", fontsize=7.0)
     ax_fp_high.tick_params(axis="x", which="both", bottom=False, labelbottom=False)
     ax_fp_high.spines["bottom"].set_visible(False)
     ax_fp.spines["top"].set_visible(False)
@@ -831,7 +823,7 @@ def figure3_activity_cliffs() -> None:
         a.spines["top"].set_visible(False)
         a.spines["right"].set_visible(False)
     ax_fp_high.spines["top"].set_visible(False)
-    save(fig, "fig2_sequence_activity_cliffs")
+    save(fig, "figure3_sequence_activity_cliffs")
 
 
 def hill(x, baseline, df_max, ec50, n):
@@ -905,14 +897,14 @@ def figure4_dose_response_leads() -> None:
     panel(axes[0, 0], "a")
     panel(axes[0, 1], "b")
     panel(axes[0, 2], "c")
-    save(fig, "fig3_dose_response_leads")
+    save(fig, "figure4_dose_response_leads")
 
     summary = fits[fits["file"].isin(files)].copy()
-    summary.to_csv(TABLES / "figure4_dose_response_lead_summary_v3.csv", index=False)
+    summary.to_csv(ANALYSIS / "figure4_dose_response_lead_summary.csv", index=False)
 
 
 def figure4_translational_relevance() -> None:
-    smiles = pd.read_csv(DATA / "ligand_smiles.csv").set_index("ligand")["SMILES"]
+    smiles = pd.read_csv(METADATA / "ligand_smiles.csv").set_index("ligand")["SMILES"]
     one_mutation_ec50_gain = 53.656326 / 22.383613
     one_mutation_slope_gain = (2.751028 / 22.383613) / (2.182608 / 53.656326)
     compounds = [
@@ -1003,14 +995,16 @@ def figure4_translational_relevance() -> None:
             )
             ax_gain.scatter([required_gain], [y_pos], s=42, color=COLOR["red"], edgecolor="white", lw=0.5, zorder=4)
 
-        label_x = required_gain * 1.14
-        label_ha = "left"
+        # Push the label clear of the one-mutation band so text never sits on the
+        # dotted band verticals or the red measured-requirement marker.
+        band_right = 53.656326 / 22.383613  # upper edge of the blue band (~2.4x)
+        label_x = max(required_gain, band_right) * 1.22
         ax_gain.text(
             label_x,
             y_pos,
             compound["gap_label"],
             fontsize=8.3,
-            ha=label_ha,
+            ha="left",
             va="center",
             color="#2D3748",
         )
@@ -1081,13 +1075,12 @@ def figure4_translational_relevance() -> None:
             "gap_label": f"{one_mutation_ec50_gain:.2f}x EC50; {one_mutation_slope_gain:.2f}x delta-slope",
         }
     )
-    pd.DataFrame(rows).to_csv(TABLES / "figure4_translational_context_v3.csv", index=False)
-    save(fig, "fig4_translational_relevance")
+    pd.DataFrame(rows).to_csv(ANALYSIS / "figure4_translational_context.csv", index=False)
+    save(fig, "figure5_translational_relevance")
 
 
 def main() -> None:
     ANALYSIS.mkdir(parents=True, exist_ok=True)
-    TABLES.mkdir(parents=True, exist_ok=True)
     FIG.mkdir(parents=True, exist_ok=True)
     style()
     figure2_screen_scope()

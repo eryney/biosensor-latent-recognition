@@ -1,4 +1,4 @@
-"""Build v3 supplementary tables from rebuilt processed outputs."""
+"""Build the supplementary tables workbook from processed outputs."""
 
 from __future__ import annotations
 
@@ -10,13 +10,13 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 
-ROOT = Path(__file__).resolve().parents[3]
-V3 = ROOT / "data_codex" / "v3"
-PROCESSED = V3 / "processed"
-ANALYSIS = V3 / "analysis"
-OUT = V3 / "supplement"
-XLSX = OUT / "Supplementary_Tables_v3.xlsx"
-LEGACY_DATA = ROOT / "data"
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+PROCESSED = DATA / "processed"
+METADATA = DATA / "metadata"
+ANALYSIS = ROOT / "analysis"
+OUT = ROOT / "supplement"
+XLSX = OUT / "Supplementary_Tables.xlsx"
 
 
 LEAD_CURVES = [
@@ -66,7 +66,7 @@ def fit_class(row: pd.Series) -> str:
 def build_tables() -> dict[str, pd.DataFrame]:
     matrix = pd.read_csv(PROCESSED / "response_matrix.csv")
     sem = pd.read_csv(PROCESSED / "response_sem_matrix.csv")
-    ligand_summary = pd.read_csv(ANALYSIS / "figure2_ligand_scope_summary_v3.csv")
+    ligand_summary = pd.read_csv(ANALYSIS / "figure2_ligand_scope_summary.csv")
     fits = pd.read_csv(PROCESSED / "dose_response_fits.csv")
     exclusions = pd.read_csv(PROCESSED / "dose_response_exclusions.csv")
 
@@ -113,11 +113,11 @@ def build_tables() -> dict[str, pd.DataFrame]:
         lead_rows.append(curve)
     lead_curves = pd.concat(lead_rows, ignore_index=True)
 
-    raw_sequences = pd.read_excel(LEGACY_DATA / "raw" / "CaltechData.xlsx", header=None)
+    seq_source = pd.read_csv(METADATA / "sensor_sequences.csv")
     seq_rows = []
-    for sensor, sequence in zip(raw_sequences.iloc[0, 2:20], raw_sequences.iloc[1, 2:20]):
-        sensor = str(sensor)
-        sequence = str(sequence).upper()
+    for _seq_row in seq_source.itertuples(index=False):
+        sensor = str(_seq_row.sensor)
+        sequence = str(_seq_row.sequence).upper()
         display, lineage = SENSOR_META.get(sensor, (sensor, "unresolved"))
         seq_rows.append(
             {
@@ -147,15 +147,15 @@ def build_tables() -> dict[str, pd.DataFrame]:
                 "generated_by",
             ],
             "value": [
-                "data_codex/v2/raw/20240724_GFP_assay",
-                "data_codex/v2/raw/20240730_doseresponses",
+                "raw_screening_data",
+                "raw_dose_response_data",
                 "Full-precision response and SEM matrices rebuilt from per-sensor workbooks.",
                 "Permissive hit: dF/F0 > 0.3; strong hit: dF/F0 > 1.0.",
                 "MEHP_cc93, aspartame_iLevaSnFR, bilirubin_V4.8.1.2, theobromine_Tap1.0.",
                 "For ciprofloxacin dose responses, H2 was excluded and the 200 uM point was recomputed from the remaining 2 replicates.",
                 "within-range reliable means EC50 < 400 uM and dFmax < 20; otherwise lower-bound/out-of-range unless flagged as noise or step-like.",
                 "S7_Sensor_Sequences reports each sequence used in the screen plus lineage labels and key sequence-index residues.",
-                "data_codex/v3/analysis/build_v3_supplement_tables.py",
+                "analysis/build_supplement_tables.py",
             ],
         }
     )

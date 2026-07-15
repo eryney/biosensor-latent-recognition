@@ -1,0 +1,64 @@
+ligand,SMILES
+DEET,CCN(CC)C(=O)C1=CC=CC(=C1)C
+uric acid,C12=C(NC(=O)N1)NC(=O)NC2=O
+sodium L-lactate,C[C@@H](C(=O)[O-])O.[Na+]
+creatinine,CN1CC(=O)N=C1N
+taurine,C(CS(=O)(=O)O)N
+D-(+)-glucosamine hydrochloride,C([C@H]([C@H]([C@@H]([C@H](C=O)N)O)O)O)O.Cl
+L-carnosine,C1=C(NC=N1)C[C@@H](C(=O)O)NC(=O)CCN
+l-carnitine,C[N+](C)(C)C[C@@H](CC(=O)[O-])O
+beta hydroxybutyrate,CC(CC(=O)[O-])O
+tryptamine hydrochloride,C1=CC=C2C(=C1)C(=CN2)CCN.Cl
+ciprofloxacin hydrochloride hydrate,C1CC1N2C=C(C(=O)C3=CC(=C(C=C32)N4CCNCC4)F)C(=O)O.O.Cl
+theophylline,CN1C2=C(C(=O)N(C1=O)C)NC=N2
+rosuvastatin,CC(C)C1=NC(=NC(=C1/C=C/[C@H](C[C@H](CC(=O)O)O)O)C2=CC=C(C=C2)F)N(C)S(=O)(=O)C
+thiamine (hydrochloride),CC1=C(SC=[N+]1CC2=CN=C(N=C2N)C)CCO.Cl.[Cl-]
+nicotinamide,C1=CC(=CN=C1)C(=O)N
+glyphosate,C(C(=O)O)NCP(=O)(O)O
+citrulline,C(C[C@@H](C(=O)O)N)CNC(=O)N
+L-(+)-ergothioneine,CC[N+](C)(C)C1=CN=C(N1)C(CC(=O)[O-])N
+"L-glutathione, reduced",NC(CCC(=O)NC(CS)C(=O)NCC(=O)O)C(=O)O
+-atenolol,CC(C)NCC(O)COC1=CC=C(CC(N)=O)C=C1
+betahistine,CCNCC1=CN=CC=C1
+3-methyl-L-histidine,CN1C=NC(CC(N)C(=O)O)=C1
+L-theanine,CCNC(=O)CCC(N)C(=O)O
+ritalinic acid,OC(=O)C(C1CCCCN1)C2=CC=CC=C2
+DEHP,CCCCC(CC)COC(=O)C1=CC=CC=C1C(=O)OCC(CC)CCCC
+everolimus,COC1CC(CCC1OCCO)CC(C)C2CC(=O)C(C)=CC=CC=CC(OC)C(OC3OC(C)CC(C3O)N(C)C)C(C)CC(C)C(=O)C(OC)C(O)C(C)=CC(C)C(=O)C4CCN(C)CC4OC(=O)C(C)(CO)O2
+cyclosporin A,CCC1NC(=O)C(C(O)C(C)C\C=C\C)N(C)C(=O)C(C(C)C)N(C)C(=O)C(CC(C)C)N(C)C(=O)C(CC(C)C)N(C)C(=O)C(C)NC(=O)C(C)NC(=O)C(CC(C)C)N(C)C(=O)C(NC(=O)C(CC(C)C)N(C)C(=O)CN(C)C1=O)C(C)C
+Atrazine,CCNC1=NC(=NC(=N1)Cl)NC(C)C
+tyramine,NCCC1=CC=C(O)C=C1
+carbamazepine,NC(=O)N1C2=CC=CC=C2C=CC3=CC=CC=C13
+melatonin,COC1=CC2=C(NC=C2CCNC(C)=O)C=C1
+phenytoin,O=C1NC(=O)C(C2=CC=CC=C2)(C3=CC=CC=C3)N1
+colchicine,COC1=CC2=C(C(=O)C(C)=CC(=O)C=C2NC(C)=O)C=C1OC
+lamotrigine,NC1=NC(=C(N=N1)C2=CC=CC(Cl)=C2Cl)N
+17 beta estradiol,CC12CCC3C(CCC4=CC(O)=CC=C34)C1CCC2O
+DHEA,CC12CCC3C(CCC4=CC(=O)CCC34)C1CCC2O
+corticosterone,CC12CCC(=O)C=C1CCC3C2C(O)CC4(C3CCC4C(=O)CO)C
+progesterone,CC(=O)C1CCC2C1(C)CCC3C2CCC4=CC(=O)CCC34C
+mono(2‐ethylhexyl) phthalate (mehp),CCCCC(CC)COC(=O)C1=CC=CC=C1C(=O)O
+Fipronil,C1=C(C=C(C(=C1C#N)N)C(F)(F)F)C(=NN2C(=C(C(=C2Cl)F)F)Cl)S(=O)C(F)(F)F
+Acetaminophen,CC(=O)NC1=CC=C(O)C=C1
+valproic acid sodium salt,CCCC(CCC)C(=O)[O-].[Na+]
+Histamine dihydrochloride,NCCC1=CN=CN1
+Caffeine,CN1C=NC2=C1C(=O)N(C)C(=O)N2C
+Nicotine,CN1CCCC1C2=CN=CC=C2
+phthalic acid,OC(=O)C1=CC=CC=C1C(=O)O
+methylsilanetriol (MST),C[Si](O)(O)O
+glyburide (potassium salt),COC1=CC=C(Cl)C=C1C(=O)NCCC2=CC=C(S(=O)(=O)NC(=O)NC3CCCCC3)C=C2
+D-neopterin,NC1=NC(=O)C2=C(N1)N=C(C(O)C(O)CO)N=C2N
+aspartame,COC(=O)C(CC1=CC=CC=C1)NC(=O)C(N)CC(=O)O
+l-thyroxine,NC(CC1=CC(I)=C(OC2=CC(I)=C(O)C(I)=C2)C(I)=C1)C(=O)O
+milirinone,CC1=C(C=C(C#N)C(=O)N1)C2=CC=C(C=C2)C3=CN=C(NC3)N
+T3,NC(CC1=CC(I)=C(OC2=CC=C(O)C(I)=C2)C(I)=C1)C(=O)O
+bilirubin,CC1=C(C(C)=C(N1)C=C2C(=O)NC(=C2C)C=C3NC(=O)C(=C3C)C=C)CCC(=O)O
+digoxin,CC1OC(OC2C(O)CC(OC3C(O)CC(OC4CCC5(C)C(CCC6C5CC(O)C7(C)C(C8=CC(=O)OC8)CCC67)C4)OC3C)OC2C)C(O)C(O)C1O
+folic acid,NC1=NC2=NC=C(CNC3=CC=C(C(=O)NC(CCC(=O)O)C(=O)O)C=C3)N=C2C(=O)N1
+theobromine,CN1C=NC2=C1C(=O)NC(=O)N2C
+atorvastatin (calcium salt hydrate),CC(C)C1=C(C(=O)NC2=CC=CC=C2)C(C3=CC=C(F)C=C3)C(C(=O)O)=C(N1)C(C)C
+(-)-epinepherine (+)-bitartrate salt,CNCC(O)C1=CC(O)=C(O)C=C1
+dopamine,NCCC1=CC(O)=C(O)C=C1
+L-dopa,NC(CC1=CC(O)=C(O)C=C1)C(=O)O
+carbadopa,C[C@](CC1=CC(=C(C=C1)O)O)(C(=O)O)NN
+(–)-Norepinephrine (bitartrate hydrate),C1=CC(=C(C=C1[C@H](CN)O)O)O.[C@@H]([C@H](C(=O)O)O)(C(=O)O)O.O

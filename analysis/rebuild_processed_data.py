@@ -1,4 +1,4 @@
-"""Rebuild v3 processed tables from the source workbooks stored in v2."""
+"""Rebuild processed data tables from the raw plate-reader workbooks."""
 
 from __future__ import annotations
 
@@ -12,12 +12,13 @@ import numpy as np
 import pandas as pd
 from openpyxl import load_workbook
 
-ROOT = Path(__file__).resolve().parents[3]
-V3 = ROOT / "data_codex" / "v3"
-RAW = ROOT / "data_codex" / "v2" / "raw"
-SCREEN_RAW = RAW / "20240724_GFP_assay"
-DOSE_RAW = RAW / "20240730_doseresponses"
-PROCESSED = V3 / "processed"
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+RAW = DATA / "raw"
+SCREEN_RAW = RAW / "raw_screening_data"
+DOSE_RAW = RAW / "raw_dose_response_data"
+PROCESSED = DATA / "processed"
+METADATA = DATA / "metadata"
 DOSE_OUT = PROCESSED / "dose_responses"
 
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -202,7 +203,7 @@ def rebuild_screen() -> None:
     sem_matrix.to_csv(PROCESSED / "response_sem_matrix.csv")
 
     for fname in ["ligand_smiles.csv", "ligand_categories.csv"]:
-        shutil.copy2(ROOT / "data" / "processed" / fname, PROCESSED / fname)
+        shutil.copy2(METADATA / fname, PROCESSED / fname)
 
 
 def parse_sensor_from_filename(path: Path) -> str:

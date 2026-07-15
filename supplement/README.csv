@@ -1,0 +1,10 @@
+field,value
+source_screen_raw,data_codex/v2/raw/20240724_GFP_assay
+source_dose_raw,data_codex/v2/raw/20240730_doseresponses
+screen_matrix,Full-precision response and SEM matrices rebuilt from per-sensor workbooks.
+screen_thresholds,Permissive hit: dF/F0 > 0.3; strong hit: dF/F0 > 1.0.
+dose_curve_exclusions,"MEHP_cc93, aspartame_iLevaSnFR, bilirubin_V4.8.1.2, theobromine_Tap1.0."
+ciprofloxacin_H2_rule,"For ciprofloxacin dose responses, H2 was excluded and the 200 uM point was recomputed from the remaining 2 replicates."
+fit_class_rule,within-range reliable means EC50 < 400 uM and dFmax < 20; otherwise lower-bound/out-of-range unless flagged as noise or step-like.
+sensor_sequence_table,S7_Sensor_Sequences reports each sequence used in the screen plus lineage labels and key sequence-index residues.
+generated_by,data_codex/v3/analysis/build_v3_supplement_tables.py
