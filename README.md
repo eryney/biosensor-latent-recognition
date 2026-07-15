@@ -12,14 +12,10 @@ scaffold family.
 
 ```
 biosensor-latent-recognition/
-├── analysis/                     Analysis pipeline (three scripts)
-│   ├── rebuild_processed_data.py     Rebuild processed tables from raw workbooks
+├── analysis/                     Analysis pipeline (two scripts)
 │   ├── make_figures.py               Regenerate all main-text figures
 │   └── build_supplement_tables.py    Rebuild the supplementary tables workbook
 ├── data/
-│   ├── raw/                      Raw plate-reader workbooks (available on request)
-│   │   ├── raw_screening_data/
-│   │   └── raw_dose_response_data/
 │   ├── processed/               Processed response matrices and dose-response curves
 │   │   ├── response_matrix.csv       63 x 18 single-concentration dF/F0 matrix
 │   │   ├── response_sem_matrix.csv   Matched propagated SEM matrix
@@ -35,26 +31,30 @@ biosensor-latent-recognition/
 │   ├── cipro_docked_7S7T.sdf         Docked ciprofloxacin pose (PDB 7S7T)
 │   ├── cipro_docked_7S7U.sdf         Docked ciprofloxacin pose (PDB 7S7U)
 │   └── esmfold_cc93_fulllength.pdb   ESMFold model of the cc93 scaffold
-├── supplement/                   Supplementary tables (workbook and per-table CSVs)
-└── manuscript/                   Manuscript document
+└── supplement/                   Supplementary tables (workbook and per-table CSVs)
 ```
 
 ## Reproducing the analysis
 
 The processed tables, figures, and supplement are all included. To regenerate
-them from source, run the three scripts in order from the repository root.
+the figures and supplement from the processed data, run the two scripts in order
+from the repository root.
 
 ```bash
-python analysis/rebuild_processed_data.py     # requires the raw workbooks
-python analysis/make_figures.py
-python analysis/build_supplement_tables.py
+python analysis/make_figures.py               # regenerates all main-text figures
+python analysis/build_supplement_tables.py     # rebuilds the supplement workbook
 ```
 
-`rebuild_processed_data.py` reads the raw plate-reader workbooks from
-`data/raw/`. Those workbooks are available from the authors on request and are
-not redistributed here. `make_figures.py` and `build_supplement_tables.py` run
-against the processed tables that ship in this repository, so figures and the
-supplement can be regenerated without the raw data.
+Run `make_figures.py` first. It reads the processed tables under `data/processed/`
+and the metadata under `data/metadata/`, writes the main-text figures to
+`figures/`, and writes intermediate summary tables (for example
+`figure2_ligand_scope_summary.csv`) to `analysis/`. `build_supplement_tables.py`
+then reads those summary tables together with the processed data to assemble
+`supplement/Supplementary_Tables.xlsx`.
+
+The processed tables that ship in this repository were derived from raw
+plate-reader workbooks. Those raw workbooks are available from the authors on
+request and are not redistributed here.
 
 Requirements: Python 3.10 or later with numpy, pandas, scipy, scikit-learn,
 matplotlib, openpyxl, and rdkit.
