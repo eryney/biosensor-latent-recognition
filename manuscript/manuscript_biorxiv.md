@@ -112,7 +112,7 @@ Protein sequences were parsed from the sensor sequence row in `CaltechData.xlsx`
 
 ## Data and Code Availability
 
-Processed response matrices, dose-response fits, figure scripts, supplementary tables, and v3 analysis outputs are currently organized in `data_codex/v3/processed`, `data_codex/v3/supplement`, and `data_codex/v3/analysis`. The source workbooks remain in `data_codex/v2/raw` to avoid duplicating the raw data. Before submission, these files should be deposited in a public repository or archive with a stable accession. The raw-data rebuild script is `data_codex/v3/analysis/rebuild_v3_processed_from_raw.py`, and the figure-generation script is `data_codex/v3/analysis/make_v3_figures.py`.
+All processed data, analysis code, and figures are publicly available at https://github.com/eryney/biosensor-latent-recognition. The repository contains the processed single-concentration response and propagated SEM matrices, the 49 processed dose-response curves and their Hill fits, ligand SMILES and scope classifications, sensor sequences, the supplementary tables workbook, and the final figures. The analysis pipeline is included: `analysis/rebuild_v3_processed_from_raw.py` rebuilds the processed tables from the raw plate-reader workbooks, `analysis/make_v3_figures.py` regenerates all figures from the processed data, and `analysis/build_v3_supplement_tables.py` rebuilds the supplement. The raw plate-reader workbooks are available from the authors on request. Code is released under the MIT License and data under CC BY 4.0.
 
 ## References
 
