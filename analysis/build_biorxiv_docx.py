@@ -34,14 +34,39 @@ normal.paragraph_format.line_spacing = 1.5
 normal.paragraph_format.space_after = Pt(6)
 
 
+def _fmt_cite(nums):
+    """Collapse a citation number list into ACS superscript text, e.g.
+    [2,3,4] -> '2-4', [1] -> '1', [8,4,9,10] -> '4,8-10'."""
+    ns = sorted(set(int(n) for n in nums))
+    parts, i = [], 0
+    while i < len(ns):
+        j = i
+        while j + 1 < len(ns) and ns[j + 1] == ns[j] + 1:
+            j += 1
+        if j - i >= 2:
+            parts.append(f"{ns[i]}-{ns[j]}")
+        else:
+            parts.extend(str(ns[k]) for k in range(i, j + 1))
+        i = j + 1
+    return ",".join(parts)
+
+
+# Split on **bold** and [CITE:...] markers, keeping the delimiters.
+_TOKEN = re.compile(r"(\*\*.*?\*\*|\[CITE:[0-9,]+\])")
+
+
 def add_runs_with_bold(paragraph, text):
-    """Render inline **bold** segments as bold runs."""
-    for i, seg in enumerate(re.split(r"(\*\*.*?\*\*)", text)):
+    """Render inline **bold** as bold runs and [CITE:n,m] as superscript numbers."""
+    for seg in _TOKEN.split(text):
         if not seg:
             continue
         if seg.startswith("**") and seg.endswith("**"):
             r = paragraph.add_run(seg[2:-2])
             r.bold = True
+        elif seg.startswith("[CITE:"):
+            nums = seg[len("[CITE:"):-1].split(",")
+            r = paragraph.add_run(_fmt_cite(nums))
+            r.font.superscript = True
         else:
             paragraph.add_run(seg)
 
