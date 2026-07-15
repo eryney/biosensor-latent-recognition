@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this dataset or code, please cite the manuscript below."
+title: "Latent Chemical Recognition Diversity in an Evolved Periplasmic Binding Protein Biosensor Family"
+authors:
+  - family-names: Marrogi
+    given-names: Eryney
+  - family-names: Muthusamy
+    given-names: Anand
+  - family-names: Nichols
+    given-names: Aaron
+  - family-names: Lester
+    given-names: Henry
+preferred-citation:
+  type: article
+  title: "Latent Chemical Recognition Diversity in an Evolved Periplasmic Binding Protein Biosensor Family"
+  authors:
+    - family-names: Marrogi
+      given-names: Eryney
+    - family-names: Muthusamy
+      given-names: Anand
+    - family-names: Nichols
+      given-names: Aaron
+    - family-names: Lester
+      given-names: Henry
+  year: 2026
+  notes: "Preprint on bioRxiv; DOI to be added upon posting."

@@ -1,0 +1,5 @@
+file,sheet,output,reason
+20240725_mehp_estradiol_cc93_3xpbsph7.xlsx,MEHP,mehp_cc93.csv,excluded weak/negative extra curve
+20240730_aspartame_iLevaSnFR_3xpbsph7.xlsx,aspartame,aspartame_iLevaSnFR.csv,excluded weak/negative extra curve
+20240730_bilirubin_v4.8.1.2_3xpbsph7.xlsx,bilirubin,bilirubin_v4.8.1.2.csv,excluded weak/negative extra curve
+20240730_theobromine_tap10_3xpbsph7.xlsx,theobromine,theobromine_tap1.0.csv,excluded weak/negative extra curve

@@ -47,7 +47,7 @@ structures/
   cipro_docked_7S7T.sdf            illustrative docked ciprofloxacin pose (7S7T frame)
 manuscript/
   manuscript_biorxiv.md            manuscript source (Markdown)
-  manuscript_v4_biorxiv.docx       bioRxiv submission document (figures embedded)
+  manuscript_biorxiv.docx          bioRxiv submission document (figures embedded)
 ```
 
 > **Note on figure file names.** The `figN_` prefixes are historical. In the
