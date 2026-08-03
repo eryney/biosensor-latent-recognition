@@ -1,4 +1,11 @@
-"""Build the supplementary tables workbook from processed outputs."""
+"""Build the supplementary tables workbook from the processed data tables.
+
+Reads the processed response matrices, dose-response fits and curves, and the
+sensor sequence table, and writes Supplementary Tables S1-S7 as individual CSVs
+plus a formatted Excel workbook under supplement/.
+
+Run:  python analysis/build_supplement_tables.py
+"""
 
 from __future__ import annotations
 
@@ -11,10 +18,9 @@ from openpyxl.utils import get_column_letter
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
-PROCESSED = DATA / "processed"
-METADATA = DATA / "metadata"
-ANALYSIS = ROOT / "analysis"
+PROCESSED = ROOT / "data" / "processed"
+METADATA = ROOT / "data" / "metadata"
+ANALYSIS = ROOT / "analysis" / "tables"
 OUT = ROOT / "supplement"
 XLSX = OUT / "Supplementary_Tables.xlsx"
 
@@ -113,11 +119,12 @@ def build_tables() -> dict[str, pd.DataFrame]:
         lead_rows.append(curve)
     lead_curves = pd.concat(lead_rows, ignore_index=True)
 
-    seq_source = pd.read_csv(METADATA / "sensor_sequences.csv")
+    # Sequences are read from the curated table committed under data/metadata.
+    curated = pd.read_csv(METADATA / "sensor_sequences.csv")
     seq_rows = []
-    for _seq_row in seq_source.itertuples(index=False):
-        sensor = str(_seq_row.sensor)
-        sequence = str(_seq_row.sequence).upper()
+    for _, row in curated.iterrows():
+        sensor = str(row["sensor"])
+        sequence = str(row["sequence"]).upper()
         display, lineage = SENSOR_META.get(sensor, (sensor, "unresolved"))
         seq_rows.append(
             {
@@ -147,8 +154,8 @@ def build_tables() -> dict[str, pd.DataFrame]:
                 "generated_by",
             ],
             "value": [
-                "raw_screening_data",
-                "raw_dose_response_data",
+                "Single-concentration screen, 18 per-sensor analyzed plate-reader workbooks (raw workbooks not included in this deposition).",
+                "Dose-response measurements, 38 plate-reader workbooks yielding 49 processed curves (raw workbooks not included in this deposition).",
                 "Full-precision response and SEM matrices rebuilt from per-sensor workbooks.",
                 "Permissive hit: dF/F0 > 0.3; strong hit: dF/F0 > 1.0.",
                 "MEHP_cc93, aspartame_iLevaSnFR, bilirubin_V4.8.1.2, theobromine_Tap1.0.",
