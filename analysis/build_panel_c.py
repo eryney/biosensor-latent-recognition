@@ -8,7 +8,7 @@ The pose is the rank-1 result of a blind DiffDock-L dock into 7S7U (the closed,
 ligand-bound conformation) and is an illustrative predicted pose with unrelaxed
 geometry, not an experimental structure.
 
-Run in the `pymol-render` environment; writes ../figures/panel_c_7S7U_*.
+Run in the `pymol-render` environment; writes ../figures/panels/panel_c_7S7U_*.
 """
 import pymol
 pymol.finish_launching(['pymol', '-qc'])
@@ -58,15 +58,34 @@ pocket_sel = "cipro or (rec and resi " + "+".join(map(str, CAGE)) + ")"
 cmd.orient(pocket_sel)
 cmd.zoom(pocket_sel, buffer=3.5)
 
-# Labels on by default at the CB of each cage residue; reposition as needed.
-cmd.set("label_size", 18)
+# Labels at the CB of each cage residue. Y357 and W436 sit close together in
+# this view, so their labels are offset along opposite directions to keep them
+# legible; the offsets are in Angstroms in camera space.
+LABEL_OFFSET = {
+    65: [-1.6, 1.5, 0.0],
+    357: [1.7, 2.0, 0.0],
+    360: [1.5, 0.9, 0.0],
+    391: [-2.2, -1.6, 0.0],
+    436: [2.0, -1.7, 0.0],
+    460: [0.6, 2.1, 0.0],
+}
+
+cmd.set("label_size", 20)
 cmd.set("label_color", "black")
+cmd.set("label_font_id", 7)
+# An outline in the background colour keeps labels readable where they cross
+# the pale cartoon.
+cmd.set("label_outline_color", "white")
+cmd.set("label_bg_color", "white")
+cmd.set("label_bg_transparency", 0.25)
 for resi, lab in CAGE.items():
-    cmd.label(f"rec and resi {resi} and name CB", f'"{lab}"')
-cmd.label("cipro and name N1", '"ciprofloxacin"') if cmd.count_atoms("cipro and name N1") else None
+    sel = f"rec and resi {resi} and name CB"
+    cmd.label(sel, f'"{lab}"')
+    cmd.set("label_position", LABEL_OFFSET[resi], sel)
+if cmd.count_atoms("cipro and name N1"):
+    cmd.label("cipro and name N1", '"ciprofloxacin"')
+    cmd.set("label_position", [0.0, -2.4, 0.0], "cipro and name N1")
 
 cmd.save(PSE)
-cmd.set("label_size", 0)   # hide labels for the clean reference PNG? keep them - reference should show
-cmd.set("label_size", 18)
 cmd.ray(2000, 1600); cmd.png(PNG, dpi=300)
 print("wrote", PSE, "and", PNG)

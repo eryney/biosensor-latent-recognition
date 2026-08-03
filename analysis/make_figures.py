@@ -142,9 +142,12 @@ def style() -> None:
 
 
 def save(fig: plt.Figure, name: str) -> None:
+    # CreationDate is pinned so that repeated runs of this script produce
+    # byte-identical PDFs; matplotlib otherwise stamps the current time.
     FIG.mkdir(parents=True, exist_ok=True)
     fig.savefig(FIG / f"{name}.png", dpi=600, bbox_inches="tight")
-    fig.savefig(FIG / f"{name}.pdf", bbox_inches="tight")
+    fig.savefig(FIG / f"{name}.pdf", bbox_inches="tight",
+                metadata={"CreationDate": None})
     plt.close(fig)
 
 

@@ -9,6 +9,8 @@ Run:  python analysis/build_supplement_tables.py
 
 from __future__ import annotations
 
+import re
+import zipfile
 from pathlib import Path
 
 import pandas as pd
@@ -216,6 +218,34 @@ def style_workbook(path: Path) -> None:
                 row[1].alignment = Alignment(vertical="top", wrap_text=True)
 
     wb.save(path)
+    pin_workbook_timestamps(path)
+
+
+def pin_workbook_timestamps(path: Path) -> None:
+    """Pin the workbook's embedded timestamps so repeated runs are identical.
+
+    openpyxl stamps the current time into docProps/core.xml when saving, which
+    makes an otherwise unchanged workbook differ byte-for-byte between runs.
+    Rewriting the archive with fixed timestamps and a fixed member order keeps
+    the committed workbook reproducible.
+    """
+    stamp = "2026-01-01T00:00:00Z"
+    with zipfile.ZipFile(path) as zf:
+        members = [(i, zf.read(i.filename)) for i in zf.infolist()]
+    fixed = []
+    for info, data in members:
+        if info.filename == "docProps/core.xml":
+            text = data.decode("utf-8")
+            text = re.sub(r"(<dcterms:created[^>]*>)[^<]*(<)", rf"\g<1>{stamp}\g<2>", text)
+            text = re.sub(r"(<dcterms:modified[^>]*>)[^<]*(<)", rf"\g<1>{stamp}\g<2>", text)
+            data = text.encode("utf-8")
+        fixed.append((info.filename, data))
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for name, data in fixed:
+            entry = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
+            entry.compress_type = zipfile.ZIP_DEFLATED
+            entry.external_attr = 0o600 << 16
+            zf.writestr(entry, data)
 
 
 def build() -> None:

@@ -76,5 +76,7 @@ place(pb, "b", "Sensing mechanism", 0, 1)
 place(pd_, "d", "ESMFold prediction vs crystal", 1, 1, callout="PBP RMSD 1.7 \u00c5")
 
 canvas.save(f"{FIGDIR}/figure1_scaffold_structure.png", dpi=(300, 300))
-canvas.save(f"{FIGDIR}/figure1_scaffold_structure.pdf", "PDF", resolution=300)
+# Both PDF timestamps are pinned so repeated runs produce an identical file.
+canvas.save(f"{FIGDIR}/figure1_scaffold_structure.pdf", "PDF", resolution=300,
+            creationDate="D:20260101000000Z", modDate="D:20260101000000Z")
 print("wrote figure1_scaffold_structure.{png,pdf}", canvas.size)

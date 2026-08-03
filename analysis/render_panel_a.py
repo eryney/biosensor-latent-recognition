@@ -9,7 +9,7 @@ The reporter is a circularly permuted GFP, so the barrel is discontinuous in
 crystal numbering: it spans resi 85-319, with the PBP contributing 3-84 and
 329-523. Module boundaries were assigned by aligning chain A against avGFP.
 
-Run in the `pymol-render` environment; writes ../figures/panel_a_7S7U.png.
+Run in the `pymol-render` environment; writes ../figures/panels/panel_a_7S7U.png.
 """
 import pymol, numpy as np
 pymol.finish_launching(['pymol', '-qc'])

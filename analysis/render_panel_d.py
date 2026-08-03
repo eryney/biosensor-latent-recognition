@@ -5,7 +5,7 @@ is the comparison the panel makes: the PBP lobes track the crystal closely
 (Ca RMSD 1.7 A) while the cpGFP module is displaced by ~21 A. Crystal is wheat,
 prediction is blue.
 
-Run in the `pymol-render` environment; writes ../figures/panel_d_7S7U.png.
+Run in the `pymol-render` environment; writes ../figures/panels/panel_d_7S7U.png.
 """
 import pymol
 pymol.finish_launching(['pymol', '-qc'])

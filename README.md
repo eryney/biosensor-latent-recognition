@@ -26,6 +26,7 @@ tables. Figure 1 is a composite of structural renders and is assembled separatel
 │   ├── make_figures.py                Figures 2-4 from the processed tables
 │   ├── compose_figure1.py             assembles Figure 1 from the rendered panels
 │   ├── render_panel_a.py              Figure 1a  scaffold architecture      (PyMOL)
+│   ├── render_panel_b.py              Figure 1b  sensing-mechanism schematic
 │   ├── build_panel_c.py               Figure 1c  docked ciprofloxacin       (PyMOL)
 │   ├── render_panel_d.py              Figure 1d  prediction vs crystal      (PyMOL)
 │   ├── build_supplement_tables.py     rebuilds the supplementary workbook
@@ -104,7 +105,13 @@ Figure 1 is composed from four rendered panels. The panel PNGs are committed und
 python analysis/compose_figure1.py
 ```
 
-Regenerating the structural panels themselves requires PyMOL:
+Panel (b) is a matplotlib schematic and needs no extra dependencies:
+
+```bash
+python analysis/render_panel_b.py
+```
+
+Regenerating the three structural panels requires PyMOL:
 
 ```bash
 cd analysis
