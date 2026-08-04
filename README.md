@@ -1,5 +1,9 @@
 # Latent Chemical Recognition in an Evolved Periplasmic Binding Protein Family for Facile Diversification of Biosensors
 
+*This GitHub repo was updated with the help of Claude Opus 5. If you find errors,
+please flag the author via email eryneym@gmail.com directly and it will be
+addressed.*
+
 Data, analysis code, and figures supporting the manuscript *Latent Chemical
 Recognition in an Evolved Periplasmic Binding Protein Family for Facile
 Diversification of Biosensors.* The manuscript itself is available as a bioRxiv
