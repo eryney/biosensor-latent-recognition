@@ -1,6 +1,10 @@
 # Latent Chemical Recognition in an Evolved Periplasmic Binding Protein Family for Facile Diversification of Biosensors
 
-Data, analysis code, and figures for the manuscript *Latent Chemical Recognition in an Evolved Periplasmic Binding Protein Family for Facile Diversification of Biosensors.*
+Data, analysis code, and figures supporting the manuscript *Latent Chemical
+Recognition in an Evolved Periplasmic Binding Protein Family for Facile
+Diversification of Biosensors.* The manuscript itself is available as a bioRxiv
+preprint; this repository holds the underlying data and the code that produces
+the figures and supplementary tables.
 
 Eighteen OpuBC/cpGFP fluorescent biosensors — seventeen from a single evolved
 lineage plus one sequence-outgroup negative control — were screened against 63
@@ -45,8 +49,7 @@ tables. Figure 1 is a composite of structural renders and is assembled separatel
 │   └── structures/                    7S7U crystal, ESMFold prediction, docked poses
 ├── figures/                           main-text figures (PNG at 600 dpi, vector PDF)
 │   └── panels/                        individual Figure 1 panels
-├── supplement/                        Supplementary Tables S1-S7 (CSV + XLSX)
-└── manuscript/                        manuscript text
+└── supplement/                        Supplementary Tables S1-S7 (CSV + XLSX)
 ```
 
 ## Dataset
