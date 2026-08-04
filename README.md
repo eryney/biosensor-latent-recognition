@@ -90,7 +90,7 @@ at 31 positions; pairwise distances span 1-26 substitutions (95.0-99.8% identity
   output. They are not binding affinities; no orthogonal binding assay was
   performed.
 
-## Reproducing the figures
+## Reproducing the figures and supplement
 
 Figures 2-4 regenerate from the processed tables:
 
@@ -123,11 +123,19 @@ python render_panel_d.py     # ESMFold prediction vs crystal
 Panel-specific details, including the choice of crystal structure and the
 provenance of the docked pose, are documented in `figures/FIGURE1_PANELS.md`.
 
-Running all five scripts on a clean checkout reproduces every committed figure,
-panel, analysis table, and the supplementary workbook byte for byte — 26 files.
-Embedded timestamps are pinned in the PDF and workbook writers, and PyMOL ray
-tracing is pinned to one thread, so rebuilt outputs can be compared directly
-against the committed copies.
+The supplementary tables and workbook are built separately:
+
+```bash
+python analysis/build_supplement_tables.py
+```
+
+Running all seven scripts on a clean checkout reproduces every generated file
+byte for byte: 8 main-text figure PNGs and PDFs, 5 Figure 1 panels, 4 analysis
+tables, and the 9 supplement files, for 26 in total. Embedded timestamps are
+pinned in the PDF and workbook writers, and PyMOL ray tracing is pinned to one
+thread, so rebuilt outputs can be compared directly against the committed
+copies. `figures/FIGURE1_PANELS.md` is written documentation, not a generated
+file, and is not part of that count.
 
 ## Requirements
 
