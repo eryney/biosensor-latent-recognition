@@ -138,9 +138,10 @@ python analysis/build_supplement_tables.py
 
 That sequence reproduces every generated file byte for byte: 8 main-text figure
 PNGs and PDFs, the 4 Figure 1 panels plus the PyMOL session written alongside
-panel (c), 4 analysis tables, and the 9 supplement files, for 26 in total. Embedded timestamps are pinned in the PDF and workbook writers,
-and PyMOL ray tracing is pinned to one thread, so rebuilt outputs can be compared
-directly against the committed copies. `figures/FIGURE1_PANELS.md` is written
+panel (c), 4 analysis tables, and the 9 supplement files, for 26 in total.
+Embedded timestamps are pinned in the PDF and workbook writers, and PyMOL ray
+tracing is pinned to one thread, so rebuilt outputs can be compared directly
+against the committed copies. `figures/FIGURE1_PANELS.md` is written
 documentation, not a generated file, and is not part of that count.
 
 ## Requirements
