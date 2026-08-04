@@ -95,50 +95,53 @@ at 31 positions; pairwise distances span 1-26 substitutions (95.0-99.8% identity
 
 ## Reproducing the figures and supplement
 
-Figures 2-4 regenerate from the processed tables:
+Figures 2-4 regenerate from the processed tables, and the supplementary tables
+and workbook are built by a second script:
 
 ```bash
 python analysis/make_figures.py
+python analysis/build_supplement_tables.py
 ```
 
-Figure 1 is composed from four rendered panels. The panel PNGs are committed under
-`figures/panels/`, so the composite can be rebuilt without PyMOL:
+Figure 1 is a composite. Its five panels are committed under `figures/panels/`,
+so if you only want to reassemble the composite from the committed panels:
 
 ```bash
 python analysis/compose_figure1.py
 ```
 
-Panel (b) is a matplotlib schematic and needs no extra dependencies:
+`compose_figure1.py` reads the panel PNGs from disk and does not render them, so
+it must run after any panel it should pick up. Panel (b) is a matplotlib
+schematic; the three structural panels require PyMOL:
 
 ```bash
-python analysis/render_panel_b.py
-```
-
-Regenerating the three structural panels requires PyMOL:
-
-```bash
+python analysis/render_panel_b.py     # 1b  sensing-mechanism schematic
 cd analysis
-python render_panel_a.py     # scaffold architecture
-python build_panel_c.py      # docked ciprofloxacin
-python render_panel_d.py     # ESMFold prediction vs crystal
+python render_panel_a.py              # 1a  scaffold architecture
+python build_panel_c.py               # 1c  docked ciprofloxacin
+python render_panel_d.py              # 1d  ESMFold prediction vs crystal
 ```
 
 Panel-specific details, including the choice of crystal structure and the
 provenance of the docked pose, are documented in `figures/FIGURE1_PANELS.md`.
 
-The supplementary tables and workbook are built separately:
+To rebuild everything from nothing, run the seven scripts in dependency order —
+the four panel renderers, then the composite, then the two table-driven scripts:
 
 ```bash
+python analysis/render_panel_b.py
+(cd analysis && python render_panel_a.py && python build_panel_c.py && python render_panel_d.py)
+python analysis/compose_figure1.py
+python analysis/make_figures.py
 python analysis/build_supplement_tables.py
 ```
 
-Running all seven scripts on a clean checkout reproduces every generated file
-byte for byte: 8 main-text figure PNGs and PDFs, 5 Figure 1 panels, 4 analysis
-tables, and the 9 supplement files, for 26 in total. Embedded timestamps are
-pinned in the PDF and workbook writers, and PyMOL ray tracing is pinned to one
-thread, so rebuilt outputs can be compared directly against the committed
-copies. `figures/FIGURE1_PANELS.md` is written documentation, not a generated
-file, and is not part of that count.
+That sequence reproduces every generated file byte for byte: 8 main-text figure
+PNGs and PDFs, 5 Figure 1 panels, 4 analysis tables, and the 9 supplement files,
+for 26 in total. Embedded timestamps are pinned in the PDF and workbook writers,
+and PyMOL ray tracing is pinned to one thread, so rebuilt outputs can be compared
+directly against the committed copies. `figures/FIGURE1_PANELS.md` is written
+documentation, not a generated file, and is not part of that count.
 
 ## Requirements
 
