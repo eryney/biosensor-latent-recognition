@@ -83,5 +83,9 @@ cmd.zoom("m and polymer.protein", buffer=5)
 # not end-on. Small turn about camera-x (the inter-domain axis).
 cmd.turn("x", -35)
 cmd.zoom("m and polymer.protein", buffer=5)
+# Ray tracing is pinned to one thread. PyMOL distributes ray tracing across
+# threads by default, which makes the antialiased output differ by a few
+# pixels between runs; single-threaded rendering is reproducible.
+cmd.set("max_threads", 1)
 cmd.ray(2200, 1700); cmd.png(OUT, dpi=300)
 print("wrote", OUT)

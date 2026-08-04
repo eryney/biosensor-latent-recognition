@@ -40,5 +40,9 @@ cmd.set("cartoon_fancy_helices", 1)
 
 cmd.orient("cry")
 cmd.zoom("cry or esm", buffer=4)
+# Ray tracing is pinned to one thread. PyMOL distributes ray tracing across
+# threads by default, which makes the antialiased output differ by a few
+# pixels between runs; single-threaded rendering is reproducible.
+cmd.set("max_threads", 1)
 cmd.ray(2200, 1700); cmd.png(OUT, dpi=300)
 print("wrote", OUT)

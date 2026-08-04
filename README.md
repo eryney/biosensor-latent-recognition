@@ -123,6 +123,12 @@ python render_panel_d.py     # ESMFold prediction vs crystal
 Panel-specific details, including the choice of crystal structure and the
 provenance of the docked pose, are documented in `figures/FIGURE1_PANELS.md`.
 
+Running all five scripts on a clean checkout reproduces every committed figure,
+panel, analysis table, and the supplementary workbook byte for byte — 26 files.
+Embedded timestamps are pinned in the PDF and workbook writers, and PyMOL ray
+tracing is pinned to one thread, so rebuilt outputs can be compared directly
+against the committed copies.
+
 ## Requirements
 
 Python 3.11 or newer; see `requirements.txt`. The PyMOL panel scripts additionally

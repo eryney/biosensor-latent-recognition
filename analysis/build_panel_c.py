@@ -58,14 +58,16 @@ pocket_sel = "cipro or (rec and resi " + "+".join(map(str, CAGE)) + ")"
 cmd.orient(pocket_sel)
 cmd.zoom(pocket_sel, buffer=3.5)
 
-# Labels at the CB of each cage residue. Y357 and W436 sit close together in
-# this view, so their labels are offset along opposite directions to keep them
-# legible; the offsets are in Angstroms in camera space.
+# Labels at the CB of each cage residue, offset in Angstroms in camera space.
+# Several cage residues project close to one another or to their own side chains
+# in this view; these offsets were selected by rendering candidates and scoring
+# how many label pixels fell on a side chain or on the ligand, so no label sits
+# on the feature it annotates and Y357 and W436 do not collide.
 LABEL_OFFSET = {
-    65: [-1.6, 1.5, 0.0],
-    357: [1.7, 2.0, 0.0],
+    65: [0.2, 3.2, 0.0],
+    357: [2.6, 2.6, 0.0],
     360: [1.5, 0.9, 0.0],
-    391: [-2.2, -1.6, 0.0],
+    391: [-3.4, -2.6, 0.0],
     436: [2.0, -1.7, 0.0],
     460: [0.6, 2.1, 0.0],
 }
@@ -87,5 +89,9 @@ if cmd.count_atoms("cipro and name N1"):
     cmd.set("label_position", [0.0, -2.4, 0.0], "cipro and name N1")
 
 cmd.save(PSE)
+# Ray tracing is pinned to one thread. PyMOL distributes ray tracing across
+# threads by default, which makes the antialiased output differ by a few
+# pixels between runs; single-threaded rendering is reproducible.
+cmd.set("max_threads", 1)
 cmd.ray(2000, 1600); cmd.png(PNG, dpi=300)
 print("wrote", PSE, "and", PNG)
